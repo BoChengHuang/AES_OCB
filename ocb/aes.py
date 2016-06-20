@@ -1,45 +1,10 @@
 #!/usr/bin/python
 #
 #  AES - Advanced Encryption Standard in pure Python
-# 
-# Based on code by:
-#             Josh Davis ( http://www.josh-davis.org ),
-#             Laurent Haan ( http://www.progressive-coding.com )
-#             Alex Martelli ( http://www.aleax.it )
-# Author:
-#             Pawel Krawczyk (http://ipsec.pl)
-# Features:
-#    1) very extensive testing included
-#    2) consistent interface
-# 
-# Licensed under GNU General Public License (GPL)
-# Version 3, 29 June 2007
-# http://www.gnu.org/licenses/gpl.html
 
 import math
 
 class AES:
-    """
-    AES encryption/decryption class with support for keylength 128, 192, 256 bits. 
-    Data is represented as bytearray objects. This class operates on single AES
-    block which is 16 bytes, so plaintext for encryption and ciphertext for 
-    decryption must be exactly 16 bytes long.
-    
-    Usage:
-    
-        >>> a = AES(128)
-        >>> key = bytearray().fromhex('A45F5FDEA5C088D1D7C8BE37CABC8C5C')
-        >>> a.setKey(key)
-        >>> plaintext = bytearray('The Magic Words ')
-        >>> len(plaintext)
-        16
-        >>> ciphertext = a.encrypt(plaintext)
-        >>> ciphertext
-        bytearray(b'\xe6\xb7\x97\xf9\x01\x88\x1e"\xf0\xfb\xd4\xebM\xc0\x8cD')
-        >>> plaintext2 = a.decrypt(ciphertext)
-        >>> plaintext2
-        bytearray(b'The Magic Words ')
-    """
     # keysize in bits -> rounds mapping
     keySizeRounds = { 128 : 10, 192 : 12, 256 : 14 }
 
