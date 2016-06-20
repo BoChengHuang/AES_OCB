@@ -8,7 +8,7 @@ AES in OCB mode by Python.
 # What is this repository for? ###
 
 * Quick summary: AES in OCB mode by Python.
-* Version 1.0.0
+* Version 1.0.1
 
 # How do I get set up? ###
 
