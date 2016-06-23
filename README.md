@@ -3,7 +3,7 @@
 AES in OCB mode by Python.
 
 ![Python](https://img.shields.io/badge/Python-2.7-orange.svg)
-![Platforms OS X | Windows](https://img.shields.io/badge/Platforms-OS%20X%20%7C%20Windows%20%7C%20Linux-lightgray.svg)
+![Platforms OS X | Windows](https://img.shields.io/badge/Platforms-%20OS%20%20%7C%20Windows%20%7C%20Linux-lightgray.svg)
 
 # What is this repository for? ###
 
