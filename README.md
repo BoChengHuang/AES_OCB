@@ -15,10 +15,12 @@ AES in OCB mode by Python.
 * Install Python
 * Run OCB-AES-Encrpt and input some text and they will be encrypt and store to tag/ciphertext files.
 * Run OCB-AES-Decrppt to decrypt from two files to get plaintext.
+* Run encryptgui.py to test the GUI.
 
 
 # Contribution guidelines ###
 * Bo Cheng Huang
 
 # Screenshots
-![alt tag](https://github.com/BoChengHuang/AES_OCB/blob/master/Screenshot.png?raw=true)
+![alt tag](https://github.com/BoChengHuang/AES_OCB/blob/master/Screenshots/Screenshot_load.png?raw=true)
+![alt tag](https://github.com/BoChengHuang/AES_OCB/blob/master/Screenshots/Screenshot_terminal.png?raw=true)
