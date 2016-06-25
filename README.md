@@ -16,7 +16,7 @@ AES in OCB mode by Python.
 * Run OCB-AES-Encrpt and input some text and they will be encrypt and store to tag/ciphertext files.
 * Run OCB-AES-Decrppt to decrypt from two files to get plaintext.
 * Run encryptgui.py to test the GUI.
-* Can interact with other client to exchange cipher.
+* Run four servers at the same time and ou can interact with other client to exchange cipher.
 
 
 # Contribution guidelines ###
