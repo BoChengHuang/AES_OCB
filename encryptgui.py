@@ -1,5 +1,6 @@
 from Tkinter import *
 from encrypt import Encrypt
+import socket
 import os
  
 class EncryptGUI(Frame):
@@ -64,6 +65,7 @@ class EncryptGUI(Frame):
         self.displayText["text"] = self.e
  
     def loadMethod(self):
+        self.getCiphertextTag()
         if os.path.exists("./data/tag.txt"):
             f = open('./data/tag.txt', 'r')
             code = f.readline()
@@ -81,6 +83,7 @@ class EncryptGUI(Frame):
             self.displayText["text"] = "Load denied!!"
  
     def saveMethod(self):
+        
         if self.e == None:
             self.displayText["text"] = "No Encrypt object can save!!"
         else:
@@ -93,6 +96,7 @@ class EncryptGUI(Frame):
             f.closed
 
             self.displayText["text"] = "The code is saved."
+            self.sendCiphertextTag(self.e.getCiphertext(), self.e.getTag())
  
     def encodeMethod(self):
         self.userinput = self.inputField.get()
@@ -135,6 +139,72 @@ class EncryptGUI(Frame):
             self.clipboard_clear()
             self.clipboard_append(self.result)
             self.displayText["text"] = "It is already copied to the clipboard."
+
+    def getCiphertextTag(self):
+        TCP_IP = "140.118.155.49"
+        TCP_PORT = 9000
+        BUFFER_SIZE = 1024
+
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((TCP_IP, TCP_PORT))
+        with open('data/ciphertext.txt', 'wb') as f:
+            print 'file opened'
+            while True:
+                #print('receiving data...')
+                data = s.recv(BUFFER_SIZE)
+                print('data=%s', (data))
+                if not data:
+                    f.close()
+                    print 'file close()'
+                    break
+                # write data to a file
+                f.write(data)
+
+        print('Successfully get the file')
+        s.close()
+        print('connection closed')
+
+        TCP_PORT = 9001
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((TCP_IP, TCP_PORT))
+        with open('data/tag.txt', 'wb') as f:
+            print 'file opened'
+            while True:
+                #print('receiving data...')
+                data = s.recv(BUFFER_SIZE)
+                print('data=%s', (data))
+                if not data:
+                    f.close()
+                    print 'file close()'
+                    break
+                # write data to a file
+                f.write(data)
+
+        print('Successfully get the file')
+        s.close()
+        print('connection closed')
+
+    def sendCiphertextTag(self, s1, s2):
+        s = socket.socket()             # Create a socket object
+        host = '140.118.155.49'     # Get local machine name
+        port = 9002                    # Reserve a port for your service.
+
+        s.connect((host, port))
+        s.send(s1)
+
+        s.close()
+        print('connection closed')
+
+        s = socket.socket()             # Create a socket object
+        host = '140.118.155.49'     # Get local machine name
+        port = 9003                   # Reserve a port for your service.
+
+        s.connect((host, port))
+        s.send(s2)
+
+        s.close()
+        print('connection closed')
+        
  
 if __name__ == '__main__':
     root = Tk()

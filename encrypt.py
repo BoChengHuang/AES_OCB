@@ -49,6 +49,10 @@ class Encrypt:
         nonce = bytearray(range(16))
         ocb.setNonce(nonce)
         (is_authentic, plaintext) = ocb.decrypt(header, ciphertext, tag)
+        print(ciphertext)
+        print(tag)
+        print('is_authentic?')
+        print(is_authentic);
         print('Plaintext: ' + plaintext)
 
         return plaintext
