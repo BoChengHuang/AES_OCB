@@ -12,7 +12,7 @@ header = bytearray('Recipient: wabesasa@gmail.com')
  
 class Encrypt:
     def __init__(self):
-        self.code = 'Yee please do not go!!!'  
+        self.code = '@{flag:whereisciphertext}'  
         self.tag = ''
         self.ciphertext = ''
      

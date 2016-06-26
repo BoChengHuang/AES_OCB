@@ -11,13 +11,14 @@ class EncryptGUI(Frame):
         self.e = None
         self.userinput = ""
         self.result = ""
+        self.isRecv = False
  
     def createWidgets(self):
         self.inputText = Label(self)
         self.inputText["text"] = "Input:"
         self.inputText.grid(row=0, column=0)
         self.inputField = Entry(self)
-        self.inputField["width"] = 50
+        self.inputField["width"] = 80
         self.inputField.grid(row=0, column=1, columnspan=6)
  
         # self.outputText = Label(self)
@@ -28,15 +29,15 @@ class EncryptGUI(Frame):
         # self.outputField.grid(row=1, column=1, columnspan=6)
          
         self.new = Button(self)
-        self.new["text"] = "Load Function"
+        self.new["text"] = "Load EncrytFunction"
         self.new.grid(row=2, column=0)
         self.new["command"] =  self.newMethod
         self.load = Button(self)
-        self.load["text"] = "Load"
+        self.load["text"] = "Load from server"
         self.load.grid(row=2, column=1)
         self.load["command"] =  self.loadMethod
         self.save = Button(self)
-        self.save["text"] = "Save"
+        self.save["text"] = "Save to Server"
         self.save.grid(row=2, column=2)
         self.save["command"] =  self.saveMethod
         self.encode = Button(self)
@@ -44,7 +45,7 @@ class EncryptGUI(Frame):
         self.encode.grid(row=2, column=3)
         self.encode["command"] =  self.encodeMethod
         self.decode = Button(self)
-        self.decode["text"] = "Decode"
+        self.decode["text"] = "Decode from files"
         self.decode.grid(row=2, column=4)
         self.decode["command"] =  self.decodeMethod
         self.clear = Button(self)
@@ -115,7 +116,11 @@ class EncryptGUI(Frame):
         self.userinput = self.inputField.get()
         
         if self.userinput == "":
-            self.displayText["text"] = "No input string!!"
+            if self.isRecv:
+                self.result = self.e.toDecode(self.e.ciphertext, self.e.tag)
+                self.displayText["text"] = self.result
+            else :
+                self.displayText["text"] = "No input string!!"
         else:
             if self.e == None:
                 self.displayText["text"] = "No encrypt object!!"
@@ -183,6 +188,7 @@ class EncryptGUI(Frame):
         print('Successfully get the file')
         s.close()
         print('connection closed')
+        self.isRecv = True
 
     def sendCiphertextTag(self, s1, s2):
         s = socket.socket()             # Create a socket object
