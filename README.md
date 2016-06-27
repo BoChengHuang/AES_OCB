@@ -8,7 +8,7 @@ AES in OCB mode by Python.
 # What is this repository for? ###
 
 * Quick summary: AES in OCB mode by Python.
-* Version 3.1.0
+* Version 3.2.0
 
 # How do I get set up? ###
 
@@ -16,7 +16,8 @@ AES in OCB mode by Python.
 * Run OCB-AES-Encrpt and input some text and they will be encrypt and store to tag/ciphertext files.
 * Run OCB-AES-Decrppt to decrypt from two files to get plaintext.
 * Run encryptgui.py to test the GUI.
-* Run four servers at the same time and you can interact with other clients to exchange cipher.
+* Run six servers at the same time and you can interact with other clients to exchange cipher.
+* You should set correct header and authenticated from server to play with many functions.
 
 
 # Contribution guidelines ###
@@ -30,3 +31,5 @@ AES in OCB mode by Python.
 ![alt tag](https://github.com/BoChengHuang/AES_OCB/blob/master/Screenshots/Screenshot_loadFromServer.png?raw=true)
 
 ![alt tag](https://github.com/BoChengHuang/AES_OCB/blob/master/Screenshots/Screenshot_decryptFromFiles.png?raw=true)
+
+![alt tag](https://github.com/BoChengHuang/AES_OCB/blob/master/Screenshots/Screenshot_authentication.png?raw=true)

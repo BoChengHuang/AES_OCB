@@ -1,3 +1,5 @@
+import sys
+sys.path.append('\\Program Files\\Python\\Lib\\python27.zip\\lib-tk')
 from Tkinter import *
 from encrypt import Encrypt
 import socket
@@ -12,6 +14,12 @@ class EncryptGUI(Frame):
         self.userinput = ""
         self.result = ""
         self.isRecv = False
+        self.isAuth = False
+        self.recvKey = ""
+
+        self.e = Encrypt() 
+        self.displayText["text"] = self.e
+        print("Current key is: " + self.e.key)
  
     def createWidgets(self):
         self.inputText = Label(self)
@@ -28,10 +36,10 @@ class EncryptGUI(Frame):
         # self.outputField["width"] = 50
         # self.outputField.grid(row=1, column=1, columnspan=6)
          
-        self.new = Button(self)
-        self.new["text"] = "Load EncrytFunction"
-        self.new.grid(row=2, column=0)
-        self.new["command"] =  self.newMethod
+        # self.new = Button(self)
+        # self.new["text"] = "Load EncrytFunction"
+        # self.new.grid(row=2, column=0)
+        # self.new["command"] =  self.newMethod
         self.load = Button(self)
         self.load["text"] = "Load from server"
         self.load.grid(row=2, column=1)
@@ -56,6 +64,10 @@ class EncryptGUI(Frame):
         self.copy["text"] = "Copy"
         self.copy.grid(row=2, column=6)
         self.copy["command"] =  self.copyMethod
+        self.auth = Button(self)
+        self.auth["text"] = "Auth"
+        self.auth.grid(row=2, column=7)
+        self.auth["command"] =  self.authFromServer
  
         self.displayText = Label(self)
         self.displayText["text"] = "something will happen."
@@ -66,11 +78,10 @@ class EncryptGUI(Frame):
         self.displayText["text"] = self.e
  
     def loadMethod(self):
-        self.getCiphertextTag()
         if os.path.exists("./data/tag.txt"):
             f = open('./data/tag.txt', 'r')
             code = f.readline()
-            self.e = Encrypt()
+            #self.e = Encrypt()
             self.e.setTag(code)
             self.displayText["text"] = "Tag includeed!"
 
@@ -82,6 +93,8 @@ class EncryptGUI(Frame):
 
         else:
             self.displayText["text"] = "Load denied!!"
+        self.getCiphertextTag()
+        self.e.setKey(self.recvKey)
  
     def saveMethod(self):
         
@@ -146,72 +159,115 @@ class EncryptGUI(Frame):
             self.displayText["text"] = "It is already copied to the clipboard."
 
     def getCiphertextTag(self):
+        if self.isAuth:
+
+            TCP_IP = "140.118.155.49"
+            TCP_PORT = 9000
+            BUFFER_SIZE = 1024
+
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((TCP_IP, TCP_PORT))
+            with open('data/ciphertext.txt', 'wb') as f:
+                print 'file opened'
+                while True:
+                    #print('receiving data...')
+                    data = s.recv(BUFFER_SIZE)
+                    print('data=%s', (data))
+                    if not data:
+                        f.close()
+                        print 'file close()'
+                        break
+                    # write data to a file
+                    f.write(data)
+
+            s.close()
+            print('Successfully get the ciphertext file, connection closed...')
+
+            TCP_PORT = 9001
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((TCP_IP, TCP_PORT))
+            with open('data/tag.txt', 'wb') as f:
+                print 'file opened'
+                while True:
+                    #print('receiving data...')
+                    data = s.recv(BUFFER_SIZE)
+                    print('data=%s', (data))
+                    if not data:
+                        f.close()
+                        print 'file close()'
+                        break
+                    # write data to a file
+                    f.write(data)
+
+            s.close()
+            print('Successfully get the tag file, connection closed...')
+            self.isRecv = True
+        else :
+            self.displayText["text"] = "You don't have the right to use."
+    
+        
+    def sendCiphertextTag(self, s1, s2):
+        if self.isAuth:
+            s = socket.socket()             # Create a socket object
+            host = '140.118.155.49'     # Get local machine name
+            port = 9002                    # Reserve a port for your service.
+
+            s.connect((host, port))
+            s.send(s1)
+
+            s.close()
+            print('Successfully send the ciphertext file, connection closed...')
+
+            s = socket.socket()             # Create a socket object
+            host = '140.118.155.49'     # Get local machine name
+            port = 9003                   # Reserve a port for your service.
+
+            s.connect((host, port))
+            s.send(s2)
+
+            s.close()
+            print('Successfully send the tag file, connection closed...')
+            self.sendKeyToServer()
+        else :
+            self.displayText["text"] = "You don't have the right to use."
+        
+
+    def authFromServer(self):
         TCP_IP = "140.118.155.49"
-        TCP_PORT = 9000
+        TCP_PORT = 9004
         BUFFER_SIZE = 1024
 
+        header = self.e.header
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
-        with open('data/ciphertext.txt', 'wb') as f:
-            print 'file opened'
-            while True:
-                #print('receiving data...')
-                data = s.recv(BUFFER_SIZE)
-                print('data=%s', (data))
-                if not data:
-                    f.close()
-                    print 'file close()'
-                    break
-                # write data to a file
-                f.write(data)
+        s.send(header)
 
-        print('Successfully get the file')
+        data = s.recv(1024)
+        print(data)
+        if data != "Not Authenticated":
+            self.displayText["text"] = "Authenticated!!"
+            self.recvKey = data
+            self.isAuth = True
+        else :
+            self.displayText["text"] = "You are a bad guy!!"
         s.close()
-        print('connection closed')
-
-        TCP_PORT = 9001
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((TCP_IP, TCP_PORT))
-        with open('data/tag.txt', 'wb') as f:
-            print 'file opened'
-            while True:
-                #print('receiving data...')
-                data = s.recv(BUFFER_SIZE)
-                print('data=%s', (data))
-                if not data:
-                    f.close()
-                    print 'file close()'
-                    break
-                # write data to a file
-                f.write(data)
-
-        print('Successfully get the file')
-        s.close()
-        print('connection closed')
-        self.isRecv = True
-
-    def sendCiphertextTag(self, s1, s2):
-        s = socket.socket()             # Create a socket object
-        host = '140.118.155.49'     # Get local machine name
-        port = 9002                    # Reserve a port for your service.
-
-        s.connect((host, port))
-        s.send(s1)
-
-        s.close()
-        print('connection closed')
-
-        s = socket.socket()             # Create a socket object
-        host = '140.118.155.49'     # Get local machine name
-        port = 9003                   # Reserve a port for your service.
-
-        s.connect((host, port))
-        s.send(s2)
-
-        s.close()
-        print('connection closed')
+        print("Current key is: " + self.e.key)
         
- 
+    def sendKeyToServer(self):
+        s = socket.socket()             # Create a socket object
+        host = '140.118.155.49'     # Get local machine name
+        port = 9005                   # Reserve a port for your service.
+
+        s.connect((host, port))
+
+        s.send(self.e.key)
+
+        msg = s.recv(1024)
+        s.close()
+        print(msg)
+        
+
+
 if __name__ == '__main__':
     root = Tk()
     app = EncryptGUI(master=root)

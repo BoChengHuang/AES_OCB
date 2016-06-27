@@ -15,6 +15,8 @@ class Encrypt:
         self.code = '@{flag:whereisciphertext}'  
         self.tag = ''
         self.ciphertext = ''
+        self.header = header
+        self.key = key
      
     def __str__(self):
         return "Test Plaintext: " + "".join(self.code)
@@ -24,6 +26,9 @@ class Encrypt:
 
     def setTag(self, data):
         self.tag = bytearray(list(data))
+
+    def setKey(self, key):
+        ocb.setKey(key)
  
     def getCiphertext(self):
         return self.ciphertext
