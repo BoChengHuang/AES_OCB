@@ -32,4 +32,4 @@ AES in OCB mode by Python.
 
 ![alt tag](https://github.com/BoChengHuang/AES_OCB/blob/master/Screenshots/Screenshot_decryptFromFiles.png?raw=true)
 
-![alt tag](https://github.com/BoChengHuang/AES_OCB/blob/master/Screenshots/Screenshot_authentication.png?raw=true)
+![alt tag](https://github.com/BoChengHuang/AES_OCB/blob/master/Screenshots/screenshot_authentication.png?raw=true)
