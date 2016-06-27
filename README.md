@@ -24,7 +24,7 @@ AES in OCB mode by Python.
 * Bo Cheng Huang
 
 # Screenshots
-![alt tag](https://github.com/BoChengHuang/AES_OCB/blob/master/Screenshots/Screenshot_load.png?raw=true)
+![alt tag](https://github.com/BoChengHuang/AES_OCB/blob/master/Screenshots/Screenshot_loadFromServer.png?raw=true)
 
 ![alt tag](https://github.com/BoChengHuang/AES_OCB/blob/master/Screenshots/Screenshot_terminal.png?raw=true)
 
